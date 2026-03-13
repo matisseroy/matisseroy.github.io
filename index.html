@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeppe Christensen — Graphic Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111111;
+      --bg2: #1a1a1a;
+      --text: #f0ede8;
+      --muted: #888;
+      --border: rgba(255,255,255,0.08);
+      --accent: #f0ede8;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 32px;
+    }
+
+    .nav-logo {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+    .nav-links a.active { text-decoration: underline; text-underline-offset: 4px; }
+
+    .btn-contact {
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      padding: 8px 20px;
+      font-size: 14px;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-contact:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    /* ── MAIN GRID ── */
+    .stage {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: stretch;
+      padding-top: 68px;
+      overflow: hidden;
+    }
+
+    .grid {
+      display: flex;
+      flex-direction: row;
+      gap: 0;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      will-change: transform;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      position: relative;
+      flex: 0 0 auto;
+      width: 26vw;
+      min-width: 300px;
+      height: 100%;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    /* Hero intro card */
+    .card--intro {
+      width: 22vw;
+      min-width: 260px;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px 32px;
+    }
+
+    .card--intro img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.95);
+    }
+
+    .card--intro .intro-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card--intro h1 {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(14px, 1.3vw, 18px);
+      line-height: 1.45;
+      color: var(--text);
+      max-width: 280px;
+    }
+
+    /* Project cards */
+    .card--project {
+      border-left: 1px solid var(--border);
+    }
+
+    .card--project img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: grayscale(100%) brightness(0.85);
+      transition: filter 0.5s ease, transform 0.6s ease;
+    }
+
+    .card--project:hover img {
+      filter: grayscale(60%) brightness(0.95);
+      transform: scale(1.03);
+    }
+
+    .card--project .card-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 24px;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+      transition: padding 0.3s ease;
+    }
+
+    .card--project:hover .card-info { padding-bottom: 36px; }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(240,237,232,0.7);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .arrow { font-size: 11px; }
+
+    /* ── PLACEHOLDER images (colored blocks for demo) ── */
+    .placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      opacity: 0.15;
+      filter: grayscale(100%);
+    }
+
+    /* ── SCROLL HINT ── */
+    .scroll-hint {
+      position: fixed;
+      bottom: 28px;
+      left: 32px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      z-index: 50;
+      pointer-events: none;
+      animation: fadeIn 1.2s 0.8s both;
+    }
+
+    .scroll-mouse {
+      width: 18px;
+      height: 28px;
+      border: 1px solid var(--muted);
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .scroll-mouse::after {
+      content: '';
+      position: absolute;
+      top: 5px; left: 50%;
+      transform: translateX(-50%);
+      width: 2px; height: 6px;
+      background: var(--muted);
+      border-radius: 2px;
+      animation: scrollDot 1.8s infinite;
+    }
+
+    @keyframes scrollDot {
+      0% { opacity: 1; top: 5px; }
+      100% { opacity: 0; top: 14px; }
+    }
+
+    /* ── SCROLL BAR DOTS ── */
+    .dots {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 50;
+    }
+
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--muted);
+      opacity: 0.3;
+      transition: opacity 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      opacity: 1;
+      transform: scale(1.4);
+      background: var(--text);
+    }
+
+    /* ── ENTER ANIMATION ── */
+    .card {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: cardIn 0.6s forwards;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.15s; }
+    .card:nth-child(3) { animation-delay: 0.25s; }
+    .card:nth-child(4) { animation-delay: 0.35s; }
+    .card:nth-child(5) { animation-delay: 0.45s; }
+    .card:nth-child(6) { animation-delay: 0.55s; }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: #1c1c1c;
+      border-radius: 4px;
+      padding: 48px;
+      max-width: 560px;
+      width: 90%;
+      transform: translateY(20px);
+      transition: transform 0.3s;
+    }
+
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .modal p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px; right: 24px;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 24px;
+      cursor: pointer;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+    .modal-close:hover { opacity: 1; }
+
+    .modal-form input,
+    .modal-form textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .modal-form input:focus,
+    .modal-form textarea:focus {
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .modal-form textarea { height: 100px; resize: none; }
+
+    .modal-form button {
+      background: var(--text);
+      color: var(--bg);
+      border: none;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .modal-form button:hover { opacity: 0.85; }
+
+    /* ── ABOUT PANEL ── */
+    .about-panel {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 150;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+
+    .about-panel.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .about-content {
+      max-width: 600px;
+      width: 90%;
+    }
+
+    .about-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.15;
+      margin-bottom: 28px;
+    }
+
+    .about-content p {
+      font-size: 15px;
+      line-height: 1.75;
+      color: rgba(240,237,232,0.7);
+      margin-bottom: 16px;
+    }
+
+    .about-close {
+      position: fixed;
+      top: 22px; right: 32px;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 28px;
+      cursor: pointer;
+      opacity: 0.6;
+      z-index: 151;
+    }
+
+    .about-close:hover { opacity: 1; }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Jeppe Christensen</a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Work</a></li>
+      <li><a href="#" id="about-link">About</a></li>
+      <li><a href="#" class="btn-contact" id="contact-link">Get in touch →</a></li>
+    </ul>
+  </nav>
+
+  <!-- MAIN STAGE -->
+  <div class="stage" id="stage">
+    <div class="grid" id="grid">
+
+      <!-- INTRO CARD -->
+      <div class="card card--intro">
+        <!-- Replace src with your own photo -->
+        <img src="https://images.unsplash.com/photo-1600486913747-55e5470d0e6e?w=600&q=80&auto=format&fit=crop" alt="Jeppe Christensen" />
+        <div class="intro-text">
+          <h1>Hi! I'm Jeppe Christensen, a graphic designer passionated about elevating brands through identity design and design systems</h1>
+        </div>
+      </div>
+
+      <!-- PROJECT CARDS -->
+      <div class="card card--project" data-title="Colombi" data-desc="Brand Identity & Brandbook">
+        <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&q=80&auto=format&fit=crop" alt="Colombi" />
+        <div class="card-info">
+          <div class="card-title">Colombi</div>
+          <div class="card-subtitle">Brand Identity &amp; Brandbook <span class="arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="card card--project" data-title="Københavns Mode & Designskole" data-desc="Website + Brand Identity (Font, Color & Layouts)">
+        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&q=80&auto=format&fit=crop" alt="KMD" />
+        <div class="card-info">
+          <div class="card-title">Københavns Mode &amp; Designskole</div>
+          <div class="card-subtitle">Website + Brand Identity (Font, Color &amp; Layouts) <span class="arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="card card--project" data-title="Octocube Games" data-desc="Brand Identity, Brandbook & Website">
+        <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?w=800&q=80&auto=format&fit=crop" alt="Octocube" />
+        <div class="card-info">
+          <div class="card-title">Octocube Games</div>
+          <div class="card-subtitle">Brand Identity, Brandbook &amp; Website <span class="arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="card card--project" data-title="Studio Nordheim" data-desc="Visual Identity & Art Direction">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format&fit=crop" alt="Studio" />
+        <div class="card-info">
+          <div class="card-title">Studio Nordheim</div>
+          <div class="card-subtitle">Visual Identity &amp; Art Direction <span class="arrow">→</span></div>
+        </div>
+      </div>
+
+      <div class="card card--project" data-title="Lumière Collective" data-desc="Brand System & Editorial Design">
+        <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=80&auto=format&fit=crop" alt="Lumiere" />
+        <div class="card-info">
+          <div class="card-title">Lumière Collective</div>
+          <div class="card-subtitle">Brand System &amp; Editorial Design <span class="arrow">→</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCROLL HINT -->
+  <div class="scroll-hint">
+    <div class="scroll-mouse"></div>
+    Scroll for more projects
+  </div>
+
+  <!-- DOTS -->
+  <div class="dots" id="dots"></div>
+
+  <!-- ABOUT PANEL -->
+  <div class="about-panel" id="about-panel">
+    <button class="about-close" id="about-close">×</button>
+    <div class="about-content">
+      <h2>Elevating brands<br><em>through design</em></h2>
+      <p>I'm Jeppe Christensen, a Copenhagen-based graphic designer with over 8 years of experience crafting brand identities that feel both timeless and contemporary.</p>
+      <p>My work spans brand strategy, visual identity systems, typography, and digital design — always with an obsessive attention to detail and a deep respect for the craft.</p>
+      <p>Currently available for select freelance projects and collaborations.</p>
+    </div>
+  </div>
+
+  <!-- CONTACT MODAL -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal" style="position:relative">
+      <button class="modal-close" id="modal-close">×</button>
+      <h2 style="font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:6px">Get in touch</h2>
+      <p>Let's talk about your project.</p>
+      <div class="modal-form">
+        <input type="text" placeholder="Your name" />
+        <input type="email" placeholder="Email address" />
+        <textarea placeholder="Tell me about your project…"></textarea>
+        <button type="button">Send message →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const stage = document.getElementById('stage');
+    const cards = document.querySelectorAll('.card');
+    const dotsEl = document.getElementById('dots');
+
+    let currentX = 0;
+    let targetX = 0;
+    let isAnimating = false;
+
+    function getMaxScroll() {
+      return -(grid.scrollWidth - stage.clientWidth);
+    }
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    function animate() {
+      currentX = lerp(currentX, targetX, 0.1);
+      grid.style.transform = `translateX(${currentX}px)`;
+      updateDots();
+      if (Math.abs(currentX - targetX) > 0.1) {
+        requestAnimationFrame(animate);
+      } else {
+        isAnimating = false;
+      }
+    }
+
+    function scroll(delta) {
+      targetX = Math.max(getMaxScroll(), Math.min(0, targetX - delta));
+      if (!isAnimating) {
+        isAnimating = true;
+        requestAnimationFrame(animate);
+      }
+    }
+
+    // Wheel
+    stage.addEventListener('wheel', e => {
+      e.preventDefault();
+      scroll(e.deltaY || e.deltaX);
+    }, { passive: false });
+
+    // Touch
+    let touchStartX = 0;
+    stage.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+    stage.addEventListener('touchmove', e => {
+      const dx = touchStartX - e.touches[0].clientX;
+      touchStartX = e.touches[0].clientX;
+      scroll(dx * 2);
+    }, { passive: true });
+
+    // Dots
+    const projectCards = document.querySelectorAll('.card--project');
+    projectCards.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => {
+        const card = projectCards[i];
+        const rect = card.getBoundingClientRect();
+        const stageRect = stage.getBoundingClientRect();
+        targetX += stageRect.left - rect.left + 2;
+        targetX = Math.max(getMaxScroll(), Math.min(0, targetX));
+        if (!isAnimating) { isAnimating = true; requestAnimationFrame(animate); }
+      });
+      dotsEl.appendChild(dot);
+    });
+
+    function updateDots() {
+      const stageLeft = stage.getBoundingClientRect().left;
+      const dots = dotsEl.querySelectorAll('.dot');
+      let closest = 0;
+      let closestDist = Infinity;
+      projectCards.forEach((card, i) => {
+        const rect = card.getBoundingClientRect();
+        const dist = Math.abs(rect.left - stageLeft);
+        if (dist < closestDist) { closestDist = dist; closest = i; }
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', i === closest));
+    }
+
+    // About
+    const aboutPanel = document.getElementById('about-panel');
+    document.getElementById('about-link').addEventListener('click', e => {
+      e.preventDefault();
+      aboutPanel.classList.add('open');
+    });
+    document.getElementById('about-close').addEventListener('click', () => {
+      aboutPanel.classList.remove('open');
+    });
+
+    // Contact modal
+    const modal = document.getElementById('modal');
+    document.getElementById('contact-link').addEventListener('click', e => {
+      e.preventDefault();
+      modal.classList.add('open');
+    });
+    document.getElementById('modal-close').addEventListener('click', () => {
+      modal.classList.remove('open');
+    });
+    modal.addEventListener('click', e => {
+      if (e.target === modal) modal.classList.remove('open');
+    });
+  </script>
+</body>
+</html>
